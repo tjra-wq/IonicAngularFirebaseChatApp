@@ -1,0 +1,8 @@
+{
+  "name": "fireChat",
+  "integrations": {
+    "cordova": {},
+    "capacitor": {}
+  },
+  "type": "angular"
+}

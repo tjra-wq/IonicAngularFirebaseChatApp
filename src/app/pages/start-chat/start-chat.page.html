@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/chats"></ion-back-button>
+    </ion-buttons>
+    <ion-title>New Chat</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item-divider>
+      <ion-label>
+        Welcome {{ currentUserEmail1 }}
+      </ion-label>
+    </ion-item-divider>
+    <ion-item>
+      <ion-input placeholder="Group Name" [(ngModel)]="title"></ion-input>
+    </ion-item>
+
+
+    <ion-item-divider *ngIf="users.length!=0">
+      <!-- <ion-label *ngIf="(users | async)?.length!=0"> -->
+      <ion-label>
+        Users added to this group
+      </ion-label>
+    </ion-item-divider>
+
+    <!-- <ion-item>
+      <ion-input placeholder="Nickname / Email" [(ngModel)]="participant"></ion-input>
+    </ion-item>
+    <ion-button color="secondary" expand="block" (click)="addUser()">Add User</ion-button> -->
+
+    <ion-item *ngFor="let usr of users">
+      <ion-label>
+        {{ usr.email }}
+        <p>{{ usr.nickname }}</p>
+      </ion-label>
+    </ion-item>
+<!-- getting all users -->
+<hr>
+<ion-item-divider>
+  <ion-label>
+    Contacts (All Available Users)
+  </ion-label>
+</ion-item-divider>
+  <ion-item *ngFor="let item of items">
+        <!-- {{item.payload.doc.data().nickname}} -->
+        <ion-label>
+          {{ item.payload.doc.data().email }}
+          <p>{{ item.payload.doc.data().nickname }}</p>
+        </ion-label>
+        <!-- {{item.payload.doc.data().email}} -->
+        <ion-button icon-only (click)="addUser(item.payload.doc.data().email)">
+          <ion-icon name="add"></ion-icon>
+        </ion-button>
+  </ion-item>
+
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar color="primary">
+    <ion-button color="light" expand="full" fill="clear" [disabled]="title == '' || users.length == 0" 
+    (click)="createGroup()">Start
+      Group</ion-button>
+  </ion-toolbar>
+</ion-footer>
+

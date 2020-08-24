@@ -1,0 +1,96 @@
+<ion-header>
+    <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/chats"></ion-back-button>
+      </ion-buttons>
+      <!-- <ion-title>{{ chat?.title }}</ion-title> -->
+      <ion-title>{{ chatTitle }}</ion-title>
+      <ion-buttons slot="end">
+        <!-- <ion-button  fill="clear" (click)="leave()">
+          Leave Group
+        </ion-button> -->
+        <ion-button *ngIf="leaveGroupFlag" fill="clear" (click)="leave()">
+          Leave
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+<ion-content #content class="ion-padding">
+
+    <ion-grid>
+        <ion-row *ngFor="let message of messages | async">
+
+          <ion-col size="9" size-md="6" *ngIf="message.from !== currentUserId" class="message other-message">
+            <small>{{ message.user }}</small><br>
+            <span>{{ message.msg }}
+              <img [src]="message.file" *ngIf="message.file">
+            </span>
+    
+            <div class="time ion-text-right"><br>{{ message.createdAt?.toMillis() | date:'short' }}</div>
+          </ion-col>
+    
+          <ion-col offset="3" offset-md="6" size="9" size-md="6" *ngIf="message.from === currentUserId" class="message my-message">
+          <small>{{ message.user }}</small><br>
+            <span>{{ message.msg }}
+              <img [src]="message.file" *ngIf="message.file">
+            </span>
+            <div class="time ion-text-right"><br>{{ message.createdAt?.toMillis() | date:'short' }}</div>
+          </ion-col>
+    
+        </ion-row>
+      </ion-grid>
+
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+          <ion-fab-button>
+            <ion-icon name="add"></ion-icon>
+          </ion-fab-button>
+          <ion-fab-list side="top">
+            <ion-fab-button  (click)="sendFileCamera()"> 
+              <ion-icon name="camera"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-button  (click)="sendFileGallery()">
+              <ion-icon name="image"></ion-icon>
+            </ion-fab-button>
+          </ion-fab-list>
+      </ion-fab>
+        
+      
+
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar color="light">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="10">
+        <ion-textarea class="message-input" rows="1" (keyup)="resize()" 
+            [(ngModel)]="newMsg"></ion-textarea>
+      </ion-col>
+      <ion-col size="2">
+        <!-- style="padding-bottom: 20px;" -->
+        <ion-button fill="clear" color="primary" [disabled]="newMsg === ''" (click)="sendMessage()">
+          <ion-icon name="send" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-toolbar>
+    <!-- <ion-toolbar color="light">
+      <ion-item>
+        <ion-row>
+          <ion-col size="10">
+            <ion-textarea class="message-input" #input rows="1" maxLength="500" (keyup)="resize()" 
+            [(ngModel)]="newMsg"></ion-textarea>
+          </ion-col>
+          <ion-col size="2">
+            <ion-button fill="clear" color="primary" [disabled]="newMsg === ''" (click)="sendMessage()">
+              <ion-icon name="send" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+    </ion-toolbar> -->
+</ion-footer>
+  

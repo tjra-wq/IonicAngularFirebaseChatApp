@@ -1,0 +1,113 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+
+    </ion-buttons>
+    <ion-title>Welcome {{ currentUserNickname1 }}</ion-title>
+    <ion-buttons slot="end">
+      <!-- <ion-button routerLink="/profile">
+        <ion-icon name="people" slot="icon-only"></ion-icon>
+      </ion-button> -->
+      <ion-button (click)="signOut()">
+        <ion-icon name="log-out" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-down-outline"
+      pullingText="Pull to refresh"
+      refreshingSpinner="dots"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+
+  
+  <ion-list>
+    <ion-item-divider>
+      <ion-label>
+        Signed in as: {{ currentUserEmail1 }}
+      </ion-label>
+    </ion-item-divider>
+
+    <!-- Showing Groups created using "Create A Group Button" -->
+    <ion-item-divider *ngIf="listOfGroups.length!=0">
+      <ion-label>
+       Your Groups
+      </ion-label>
+    </ion-item-divider>
+    <ion-item button *ngFor="let item of listOfGroups;"
+    (click)="GroupChat(item.payload.doc.data().id,item.payload.doc.data().title)"
+    >
+      <ion-label class="ion-text-wrap">
+        <ion-text color="primary">
+          <h3>{{ item.payload.doc.data().title }}</h3>
+        </ion-text>
+        <p>{{ item.payload.doc.data().users}} Users</p>
+        <!-- <p>Group id: {{ item.payload.doc.data().id }}</p> -->
+      </ion-label>
+    </ion-item>
+
+
+
+    <ion-item-divider>
+      <ion-label>
+        Contacts (All Available Users)
+      </ion-label>
+    </ion-item-divider>
+    <ion-item button *ngFor="let item of listOfUsers;" (click)="oneOnOneChat(item.payload.doc.data().email,item.payload.doc.data().nickname)">
+      <ion-label>
+        {{ item.payload.doc.data().email }}
+        <p>{{ item.payload.doc.data().nickname }}</p>
+      </ion-label>
+      <!-- Keep either a button or a routerlink--both togather will not work -->
+      <!-- <ion-button icon-only (click)="oneOnOneChat(item.payload.doc.data().email,item.payload.doc.data().nickname)">
+        <ion-icon name="chatbubble-outline"></ion-icon>
+      </ion-button> -->
+      <!-- <ion-button icon-only>
+        <ion-icon name="call-outline"></ion-icon>
+      </ion-button> -->
+    </ion-item>
+
+
+
+    <!-- Showing All groups (including one on one chat groups) -->
+    <!-- <ion-item-divider *ngIf="(groups | async)?.length!=0">
+      <ion-label>
+      All Groups (1-1 groups & group chat groups)
+    </ion-label>
+  </ion-item-divider>
+  <ion-item button *ngFor="let group of groups | async" class="ion-text-wrap"
+  [routerLink]="['/', 'chat', (group | async)?.id || 0]">
+    <ion-label class="ion-text-wrap">
+      <ion-text color="primary">
+        <h3>{{ (group | async)?.title }}</h3>
+      </ion-text>
+      <p>{{ (group | async)?.users.length }} Users</p>
+    </ion-label>
+    <ion-badge color="success" slot="end"> {{ getUnreadMessageBadge }}</ion-badge>
+  </ion-item> -->
+
+
+
+
+
+
+  </ion-list>
+
+
+
+</ion-content>
+
+
+
+<ion-footer>
+  <ion-toolbar color="primary">
+    <ion-button color="light" fill="clear" expand="full" routerLink="/chats/start">Create a new Group</ion-button>
+  </ion-toolbar>
+</ion-footer>
+
